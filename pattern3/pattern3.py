@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-# ==============================
-# ⚙️ CẤU HÌNH
-# ==============================
+
+#  CẤU HÌNH
+
 INPUT_CSV = "wallet_SP1-2-3.csv"
 TARGET_WALLET = "Ar2Y6o1QmrRAskjii1cRfijeKugHH13ycxW5cd7rro1x"
 
@@ -16,18 +16,18 @@ OUTPUT_DETAIL_FILE = "pattern3_sum_margin_15_detail.csv"
 OUTPUT_DAILY_FILE = "pattern3_sum_margin_15_daily.csv"
 
 def analyze_pattern3_sum_margin():
-    print(f"🚀 Bắt đầu chạy Pattern 3: Sum Margin 3 lệnh trước < {TARGET_SUM_MARGIN}%")
+    print(f" Bắt đầu chạy Pattern 3: Sum Margin 3 lệnh trước < {TARGET_SUM_MARGIN}%")
 
     # 1. Đọc dữ liệu & Xử lý sơ bộ
     try:
         df = pd.read_csv(INPUT_CSV)
     except FileNotFoundError:
-        print(f"❌ Không tìm thấy file: {INPUT_CSV}")
+        print(f" Không tìm thấy file: {INPUT_CSV}")
         return
 
     df = df[df['Wallet'] == TARGET_WALLET].copy()
     if df.empty: 
-        print("⚠️ Ví không có dữ liệu.")
+        print(" Ví không có dữ liệu.")
         return
 
     df['Transaction Time'] = pd.to_datetime(df['Transaction Time'])
@@ -98,7 +98,7 @@ def analyze_pattern3_sum_margin():
                     matched_cycles.append(row_data)
 
     if not matched_cycles:
-        print("⚠️ Không có cycle nào thỏa mãn Pattern 3.")
+        print(" Không có cycle nào thỏa mãn Pattern 3.")
         return
 
     # 4. Sắp xếp kết quả toàn cục
@@ -118,7 +118,7 @@ def analyze_pattern3_sum_margin():
     }, inplace=True)
     
     df_detail_output.to_csv(OUTPUT_DETAIL_FILE, index=False, encoding='utf-8-sig')
-    print(f"✅ [File 1] Chi tiết Pattern 3: {OUTPUT_DETAIL_FILE}")
+    print(f" [File 1] Chi tiết Pattern 3: {OUTPUT_DETAIL_FILE}")
 
     # 6. Xuất File 2: Report Ngày
     daily_report = df_result.groupby('date_str').agg({
@@ -138,7 +138,7 @@ def analyze_pattern3_sum_margin():
     
     daily_report = daily_report[['Margin (%)', 'Matched Cycles', 'Total Vol', 'Total Profit']]
     daily_report.to_csv(OUTPUT_DAILY_FILE, encoding='utf-8-sig')
-    print(f"✅ [File 2] Report Ngày Pattern 3: {OUTPUT_DAILY_FILE}")
+    print(f" [File 2] Report Ngày Pattern 3: {OUTPUT_DAILY_FILE}")
 
 if __name__ == "__main__":
     analyze_pattern3_sum_margin()
