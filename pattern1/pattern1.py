@@ -1,9 +1,7 @@
 import pandas as pd
 import numpy as np
 
-# ==============================
-# ⚙️ CẤU HÌNH
-# ==============================
+#  CẤU HÌNH
 INPUT_CSV = "wallet_SP1-2-3.csv"
 TARGET_WALLET = "Ar2Y6o1QmrRAskjii1cRfijeKugHH13ycxW5cd7rro1x"
 
@@ -16,15 +14,14 @@ OUTPUT_DETAIL_FILE = "strategy_cycles_final_detail.csv"
 OUTPUT_DAILY_FILE = "strategy_daily_final_report.csv"
 
 def analyze_final_flow():
-    print(f"🚀 Bắt đầu xử lý theo luồng: Filter Token -> Sort Time -> Daily Report")
+    print(f" Bắt đầu xử lý theo luồng: Filter Token -> Sort Time -> Daily Report")
 
-    # ---------------------------------------------------------
-    # BƯỚC 0: CHUẨN BỊ DỮ LIỆU THÔ
-    # ---------------------------------------------------------
+  # BƯỚC 0: CHUẨN BỊ DỮ LIỆU THÔ
+
     try:
         df = pd.read_csv(INPUT_CSV)
     except FileNotFoundError:
-        print(f"❌ Không tìm thấy file: {INPUT_CSV}")
+        print(f" Không tìm thấy file: {INPUT_CSV}")
         return
 
     df = df[df['Wallet'] == TARGET_WALLET].copy()
@@ -58,9 +55,9 @@ def analyze_final_flow():
 
     df_cycles = pd.DataFrame(cycle_stats)
 
-    # ---------------------------------------------------------
+
     # BƯỚC 1: LỌC THEO TOKEN & TÌM CYCLE THỎA MÃN
-    # ---------------------------------------------------------
+
     matched_cycles = []
     
     # Group by Token để xét streak riêng biệt cho từng con hàng
@@ -86,7 +83,7 @@ def analyze_final_flow():
                 current_streak = 0 # Thắng hoặc Hòa là reset
 
     if not matched_cycles:
-        print("⚠️ Không có cycle nào thỏa mãn.")
+        print(" Không có cycle nào thỏa mãn.")
         return
 
     # ---------------------------------------------------------
@@ -110,11 +107,11 @@ def analyze_final_flow():
         'profit': 'Profit', 'margin_percent': 'Margin %'
     })
     df_detail_output.to_csv(OUTPUT_DETAIL_FILE, index=False, encoding='utf-8-sig')
-    print(f"✅ [File 1] Chi tiết từng lệnh: {OUTPUT_DETAIL_FILE}")
+    print(f" [File 1] Chi tiết từng lệnh: {OUTPUT_DETAIL_FILE}")
 
-    # ---------------------------------------------------------
+
     # BƯỚC 3: TÍNH TOÁN DAILY REPORT (MARGIN DAILY)
-    # ---------------------------------------------------------
+
     # Group theo ngày từ danh sách đã lọc
     daily_group = df_result.groupby('date_str')
     
@@ -139,7 +136,7 @@ def analyze_final_flow():
     
     # Xuất File 2: Report Ngày
     daily_report.to_csv(OUTPUT_DAILY_FILE, encoding='utf-8-sig')
-    print(f"✅ [File 2] Báo cáo theo ngày: {OUTPUT_DAILY_FILE}")
+    print(f" [File 2] Báo cáo theo ngày: {OUTPUT_DAILY_FILE}")
 
     # In thử vài dòng kết quả
     print("\n--- PREVIEW DAILY REPORT ---")
