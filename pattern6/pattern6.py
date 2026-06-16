@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-# ==============================
-# ⚙️ CẤU HÌNH
-# ==============================
+
+#  CẤU HÌNH
+
 INPUT_CSV = "wallet_SP1-2-3.csv"
 TARGET_WALLET = "Ar2Y6o1QmrRAskjii1cRfijeKugHH13ycxW5cd7rro1x"
 
@@ -18,15 +18,14 @@ OUTPUT_DETAIL_FILE = "pattern_specific_c1_c2_c3_detail.csv"
 OUTPUT_DAILY_FILE = "pattern_specific_c1_c2_c3_daily.csv"
 
 def analyze_specific_pattern():
-    print(f"🚀 Bắt đầu chạy Pattern: C1<-7, C2<3, C3<-13 -> C4 Vol<=2")
+    print(f" Bắt đầu chạy Pattern: C1<-7, C2<3, C3<-13 -> C4 Vol<=2")
 
-    # ---------------------------------------------------------
+
     # BƯỚC 1: ĐỌC DỮ LIỆU & TÍNH MARGIN CƠ BẢN
-    # ---------------------------------------------------------
     try:
         df = pd.read_csv(INPUT_CSV)
     except FileNotFoundError:
-        print(f"❌ Không tìm thấy file: {INPUT_CSV}")
+        print(f" Không tìm thấy file: {INPUT_CSV}")
         return
 
     df = df[df['Wallet'] == TARGET_WALLET].copy()
@@ -63,9 +62,8 @@ def analyze_specific_pattern():
 
     df_cycles = pd.DataFrame(cycle_stats)
 
-    # ---------------------------------------------------------
+
     # BƯỚC 2: LOGIC SLIDING WINDOW (C1, C2, C3, C4)
-    # ---------------------------------------------------------
     matched_cycles = []
     token_groups = df_cycles.groupby('Token')
 
@@ -106,12 +104,10 @@ def analyze_specific_pattern():
                     matched_cycles.append(row_data)
 
     if not matched_cycles:
-        print("⚠️ Không có cycle nào thỏa mãn Pattern.")
+        print(" Không có cycle nào thỏa mãn Pattern.")
         return
 
-    # ---------------------------------------------------------
     # BƯỚC 3: XUẤT BÁO CÁO
-    # ---------------------------------------------------------
     df_result = pd.DataFrame(matched_cycles)
     df_result = df_result.sort_values(by='entry_time').reset_index(drop=True)
 
@@ -132,7 +128,7 @@ def analyze_specific_pattern():
     })
     
     df_detail.to_csv(OUTPUT_DETAIL_FILE, index=False, encoding='utf-8-sig')
-    print(f"✅ [File 1] Chi tiết từng lệnh: {OUTPUT_DETAIL_FILE}")
+    print(f" [File 1] Chi tiết từng lệnh: {OUTPUT_DETAIL_FILE}")
 
     # 2. File Daily Report
     daily_report = df_result.groupby('date_str').agg({
@@ -151,7 +147,7 @@ def analyze_specific_pattern():
     
     daily_report = daily_report[['Margin (%)', 'Matched Cycles', 'Total Vol', 'Total Profit']]
     daily_report.to_csv(OUTPUT_DAILY_FILE, encoding='utf-8-sig')
-    print(f"✅ [File 2] Báo cáo ngày: {OUTPUT_DAILY_FILE}")
+    print(f" [File 2] Báo cáo ngày: {OUTPUT_DAILY_FILE}")
 
 if __name__ == "__main__":
     analyze_specific_pattern()
