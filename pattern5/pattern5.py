@@ -2,9 +2,9 @@ import sqlite3
 import json
 from datetime import datetime, timedelta, timezone
 
-# ==============================
-# ⚙️ CẤU HÌNH
-# ==============================
+
+#  CẤU HÌNH
+
 DB_FILE = "solana_trading5.db"
 OUTPUT_FILE = "sp1_transactions_export.jsonl"
 TARGET_WALLET = "Ar2Y6o1QmrRAskjii1cRfijeKugHH13ycxW5cd7rro1x"
@@ -17,7 +17,7 @@ START_DATE_STR = "2025-11-01 00:00:00"
 DEFAULT_DECIMALS = 6 
 
 def export_transactions_jsonl():
-    print(f"🚀 Bắt đầu export giao dịch ví {TARGET_WALLET[:6]}... từ {START_DATE_STR}")
+    print(f" Bắt đầu export giao dịch ví {TARGET_WALLET[:6]}... từ {START_DATE_STR}")
 
     # 1. Tính toán Timestamp bắt đầu
     start_dt = datetime.strptime(START_DATE_STR, "%Y-%m-%d %H:%M:%S")
@@ -45,14 +45,14 @@ def export_transactions_jsonl():
         cursor.execute(query, (TARGET_WALLET, start_ts))
         rows = cursor.fetchall()
     except sqlite3.OperationalError as e:
-        print(f"❌ Lỗi SQL: {e}")
+        print(f" Lỗi SQL: {e}")
         conn.close()
         return
     
-    print(f"🔍 Tìm thấy {len(rows)} giao dịch.")
+    print(f" Tìm thấy {len(rows)} giao dịch.")
 
     if not rows:
-        print("⚠️ Không có dữ liệu để export.")
+        print(" Không có dữ liệu để export.")
         conn.close()
         return
 
@@ -88,7 +88,7 @@ def export_transactions_jsonl():
             f.write(json.dumps(record) + "\n")
 
     conn.close()
-    print(f"✅ Đã xuất xong file: {OUTPUT_FILE}")
+    print(f" Đã xuất xong file: {OUTPUT_FILE}")
     
     # In check
     print("\n--- SAMPLE OUTPUT (First 3 lines) ---")
