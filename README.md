@@ -1,3 +1,2 @@
-# Sol-wallet-tracker
 # Crypto Wallet Trading Strategy Analyzer 
 Dự án này là một bộ công cụ phân tích lịch sử giao dịch crypto trên mạng lưới Solana (dựa vào code sử dụng đơn vị SOL) nhằm đánh giá và backtest các chiến lược giao dịch tự động. Công cụ phân tích dữ liệu từ file CSV của ví, nhóm các giao dịch thành các chu kỳ (cycles) và lọc dựa trên các điều kiện chiến lược như streak thua lỗ (loss streak) và khối lượng mua (buy volume).
